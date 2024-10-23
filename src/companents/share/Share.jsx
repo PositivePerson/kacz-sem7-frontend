@@ -19,7 +19,7 @@ export default function Share({ user }) {
         };
 
         try {
-            const response = await fetch("http://localhost:8800/api/posts/create", {
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/posts/create`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

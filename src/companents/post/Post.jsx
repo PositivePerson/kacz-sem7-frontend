@@ -26,7 +26,7 @@ export default function Post({ post, currentUserId, isAdmin }) {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get(`http://localhost:8800/api/users/${post.userId}`);
+                const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/users/${post.userId}`);
                 setUser(res.data);
             } catch (err) {
                 console.error(err);
@@ -39,7 +39,7 @@ export default function Post({ post, currentUserId, isAdmin }) {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const res = await axios.get(`http://localhost:8800/api/posts/${post._id}/comments`);
+                const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/posts/${post._id}/comments`);
                 setComments(res.data);
             } catch (err) {
                 console.error(err);
@@ -59,10 +59,10 @@ export default function Post({ post, currentUserId, isAdmin }) {
     // Like handler
     const likeHandler = async () => {
         try {
-            const res = await axios.put(`http://localhost:8800/api/posts/${post._id}/like`, { userId: currentUserId });
+            const res = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/posts/${post._id}/like`, { userId: currentUserId });
 
             // If the server response confirms success, fetch the updated like count
-            const updatedPost = await axios.get(`http://localhost:8800/api/posts/${post._id}`);
+            const updatedPost = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/posts/${post._id}`);
 
             // Update the like count and state based on the fresh data from the backend
             setLike(updatedPost.data.likes.length);
@@ -81,7 +81,7 @@ export default function Post({ post, currentUserId, isAdmin }) {
     // Save edited post
     const handleSaveEdit = async () => {
         try {
-            await axios.put(`http://localhost:8800/api/posts/${post._id}/edit`, {
+            await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/posts/${post._id}/edit`, {
                 userId: post.userId, // Ensure userId is included in the request body
                 desc: editedDesc,
             });
@@ -97,7 +97,7 @@ export default function Post({ post, currentUserId, isAdmin }) {
         const confirmDelete = window.confirm("Are you sure you want to delete this post?");
         if (confirmDelete) {
             try {
-                await axios.delete(`http://localhost:8800/api/posts/${post._id}/delete`, {
+                await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/posts/${post._id}/delete`, {
                     data: { userId: post.userId } // Include userId in the request body
                 });
                 // You may also want to update the state in the parent component to remove the post from the UI
@@ -113,7 +113,7 @@ export default function Post({ post, currentUserId, isAdmin }) {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const res = await axios.get(`http://localhost:8800/api/posts/${post._id}/comments`);
+                const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/posts/${post._id}/comments`);
                 setComments(res.data);
             } catch (err) {
                 console.error(err);
@@ -132,7 +132,7 @@ export default function Post({ post, currentUserId, isAdmin }) {
         const confirmDelete = window.confirm("Are you sure you want to delete this comment?");
         if (confirmDelete) {
             try {
-                await axios.delete(`http://localhost:8800/api/posts/${post._id}/comments/${commentId}`, {
+                await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/posts/${post._id}/comments/${commentId}`, {
                     data: { userId: currentUserId, isAdmin }
                 });
                 setComments(comments.filter(comment => comment._id !== commentId));  // Update state after deletion
@@ -147,7 +147,7 @@ export default function Post({ post, currentUserId, isAdmin }) {
         e.preventDefault();
         if (newComment.trim() === "") return;
         try {
-            const res = await axios.post(`http://localhost:8800/api/posts/${post._id}/comments`, {
+            const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/posts/${post._id}/comments`, {
                 userId: currentUserId,
                 text: newComment
             });

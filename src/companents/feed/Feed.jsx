@@ -12,7 +12,7 @@ export default function Feed({ user, searchTerm }) {
         const fetchPosts = async () => {
             try {
                 const token = localStorage.getItem("authToken"); // Retrieve token from local storage or any other storage
-                const res = await axios.get("http://localhost:8800/api/posts", {
+                const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/posts`, {
                     headers: {
                         Authorization: `Bearer ${token}`, // Include token in the request headers
                     },

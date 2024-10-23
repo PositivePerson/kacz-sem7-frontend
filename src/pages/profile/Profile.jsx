@@ -21,7 +21,7 @@ export default function Profile() {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get(`http://localhost:8800/api/users/${userId}`, {
+                const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/users/${userId}`, {
                     headers: { Authorization: `Bearer ${authToken}` } // Attach the token to the request
                 });
                 console.log("user in res.data: ", res.data);
