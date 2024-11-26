@@ -6,8 +6,11 @@ import Rightbar from "../../companents/rightbar/Rightbar";
 import ProfileFeed from "../../companents/feed/ProfileFeed";
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode"; // Destructured import, not default
+import { useAuthRedirect } from '../../hooks/useAuthRedirect';
 
 export default function Profile() {
+    useAuthRedirect(); // Redirects if the user is not authenticated
+
     const [user, setUser] = useState({}); // State to hold the fetched user data
     const [searchTerm, setSearchTerm] = useState(""); // State for search input
 
