@@ -25,6 +25,7 @@ export default function Share({ user }) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(newPost),
+                credentials: "include",  // Ensures cookies are sent with the request
             });
 
             if (response.ok) {

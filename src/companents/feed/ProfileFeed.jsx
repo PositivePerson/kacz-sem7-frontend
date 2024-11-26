@@ -11,10 +11,12 @@ export default function Feed({ user, searchTerm }) {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                // No need to manually add the token, as cookies are sent automatically
-                const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/posts`, {
+                // Fetch only posts created by the current user
+                console.log(`calling /api/posts?userId=${user._id}`)
+                const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/posts?userId=${user._id}`, {
                     withCredentials: true,  // Ensures cookies are sent with the request
                 });
+
                 // Sort posts by createdAt in descending order (newest first)
                 setPosts(res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             } catch (err) {
@@ -22,15 +24,13 @@ export default function Feed({ user, searchTerm }) {
             }
         };
         fetchPosts();
-    }, []);
+    }, [user._id]);
 
-    // Filter posts based on search term (username or description)
+    // Filter posts based on search term (description)
     const filteredPosts = posts.filter((post) => {
-        return (
-            searchTerm ? post.desc?.toLowerCase().includes(searchTerm.toLowerCase()) : post
-            // ||
-            // post.username?.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        return searchTerm
+            ? post.desc?.toLowerCase().includes(searchTerm.toLowerCase())
+            : true; // If no search term, show all posts
     });
 
     return (

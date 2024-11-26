@@ -30,12 +30,21 @@ export default function Signup() {
                 email,
                 password,
                 profilePicture: selectedAvatar, // Send the selected avatar along with registration data
+            }, {
+                withCredentials: true,  // Ensures cookies are sent with the request
             });
             console.log(res.data);
             alert("Registration successful");
         } catch (err) {
-            console.error(err);
-            setError("Registration failed. Please try again.");
+            console.error("err is: ", err);
+            if (err.status === 429) {
+                setError(err.response.statusText);
+            } else if (err.response.data?.requirements) {
+                setError(err.response.data.requirements);
+            }
+            else {
+                setError("Registration failed. Please try again.");
+            }
         }
     };
 

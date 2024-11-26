@@ -1,6 +1,7 @@
 import "./topbar.css";
 import { Search } from '@material-ui/icons';
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 export default function Topbar({ searchTerm, setSearchTerm, currentUser }) {
     const history = useHistory();
@@ -15,12 +16,23 @@ export default function Topbar({ searchTerm, setSearchTerm, currentUser }) {
         history.push('/profile');
     };
 
-    const handleLogout = () => {
-        // Clear the token from localStorage (or sessionStorage)
-        localStorage.removeItem("authToken");
+    const handleLogout = async () => {
+        try {
+            // Make a POST request to the /logout endpoint with credentials
+            await axios.post(
+                `${process.env.REACT_APP_API_BASE_URL}/api/auth/logout`,
+                {},  // Pass an empty body
+                { withCredentials: true }  // Ensures cookies are sent with the request
+            );
 
-        // Redirect to the login page or homepage
-        history.push('/login');  // Assuming '/login' is your login route
+            // Clear the token from localStorage (if applicable)
+            localStorage.removeItem("authToken");
+
+            // Redirect to the login page or homepage
+            history.push('/login');  // Assuming '/login' is your login route
+        } catch (err) {
+            console.error("Error logging out", err);
+        }
     };
 
     return (

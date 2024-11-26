@@ -96,6 +96,11 @@
 
 }
 
+.disabledMoreVert {
+    color: lightgray;
+    cursor: not-allowed;
+}
+
 .postTop{
     display: flex;
     align-items: center;

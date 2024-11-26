@@ -11,16 +11,22 @@ export default function Signin() {
         e.preventDefault();
         try {
             const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/auth/login`, {
-                email,
-                password
+                email: email,
+                password: password
+            }, {
+                withCredentials: true  // Sends cookies along with the request
             });
             localStorage.setItem("authToken", res.data.token);  // Store JWT in localStorage
-            alert("Login successful");
             console.log(res.data);
+            alert("Login successful");
             window.location.replace("/");
         } catch (err) {
             console.error(err);
-            setError("Login failed. Please check your credentials.");
+            if (err.status === 429) {
+                setError(err.response.statusText);
+            } else {
+                setError("Login failed. Please check your credentials.");
+            }
         }
     };
 

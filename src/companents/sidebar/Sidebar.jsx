@@ -15,9 +15,7 @@ export default function Sidebar() {
             try {
                 const token = localStorage.getItem("authToken"); // Retrieve token from local storage or any other storage
                 const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/users/profile`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`, // Include token in the request headers
-                    },
+                    withCredentials: true,  // Ensures cookies are sent with the request
                 });
                 setUsers(res.data); // Save users in state
             } catch (err) {

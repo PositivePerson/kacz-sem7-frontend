@@ -3,7 +3,7 @@ import "./profile.css";
 import Topbar from "../../companents/topbar/Topbar";
 import Sidebar from "../../companents/sidebar/Sidebar";
 import Rightbar from "../../companents/rightbar/Rightbar";
-import Feed from "../../companents/feed/Feed";
+import ProfileFeed from "../../companents/feed/ProfileFeed";
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode"; // Destructured import, not default
 
@@ -22,7 +22,7 @@ export default function Profile() {
         const fetchUser = async () => {
             try {
                 const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/users/${userId}`, {
-                    headers: { Authorization: `Bearer ${authToken}` } // Attach the token to the request
+                    withCredentials: true,  // Ensures cookies are sent with the request
                 });
                 console.log("user in res.data: ", res.data);
                 setUser(res.data); // Save the user data in the state
@@ -50,7 +50,7 @@ export default function Profile() {
                         </div>
                     </div>
                     <div className="profileRightBottom">
-                        <Feed user={user} searchTerm={searchTerm} />
+                        <ProfileFeed user={user} searchTerm={searchTerm} />
                         <Rightbar profile />
                     </div>
                 </div>

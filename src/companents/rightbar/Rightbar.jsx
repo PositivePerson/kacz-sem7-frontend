@@ -42,9 +42,7 @@ export default function Rightbar({ profile }) {
         try {
           const token = localStorage.getItem("authToken"); // Retrieve token from local storage or any other storage
           const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/users/profile`, {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include token in the request headers
-            },
+            withCredentials: true,  // Ensures cookies are sent with the request
           });
           setUsers(res.data); // Save users in state
         } catch (err) {
@@ -64,13 +62,13 @@ export default function Rightbar({ profile }) {
           </div>
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">From:</span>
-            <span className="rightbarInfoValue">Nanded, India</span>
+            <span className="rightbarInfoValue">Wroclaw, Poland</span>
           </div>
         </div>
         <h4 className="rightbarTitle">User friends</h4>
         <div className="rightbarFollowings">
-          {users.map((friend) => (
-            <div className="rightbarFollowing">
+          {users.map((friend, id) => (
+            <div key={friend.username + id} className="rightbarFollowing">
               <img
                 src={
                   friend.profilePicture}
